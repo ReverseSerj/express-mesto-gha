@@ -9,14 +9,16 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
-    .orFail(new ERROR_STATUS('NotValidId'))
     .then((user) => {
-      res.send({ data: user });
-    })
-
-    .catch((err) => {
-      if (err.name === 'NotValidId') {
+      if (!user) {
         res.status(ERROR_STATUS.NOT_FOUND).send({ message: 'Пользователь не найден' });
+      } else {
+        res.status(200).send({ data: user });
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(ERROR_STATUS.BAD_REQUEST).send({ message: 'Ошибка в id пользователя' });
       } else {
         res.status(ERROR_STATUS.SERVER_ERROR).send({ message: 'Что-то пошло не так' });
       }
