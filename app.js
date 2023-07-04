@@ -1,12 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const ERROR_STATUS = require('./data/err');
 
 const { PORT = 3000 } = process.env;
 const app = express();
+
+app.use(helmet());
 
 mongoose.connect('mongodb://localhost:27017/mestodb')
   .catch((err) => console.log(err));
