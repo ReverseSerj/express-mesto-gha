@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const BadRequest = require('../errors/badRequest');
 const NotFound = require('../errors/notFound');
-const AuthError = require('../errors/authErr');
 const ConflictError = require('../errors/conflictErr');
 
 module.exports.getUsers = (req, res, next) => {
@@ -63,11 +62,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequest('Ошибка в id пользователя'));
-      } else {
-        next(err);
-      }
+      next(err);
     });
 };
 
@@ -79,8 +74,6 @@ module.exports.updateProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные при обновлении профиля'));
-      } else if (err.name === 'CastError') {
-        next(new BadRequest('Ошибка в id пользователя'));
       } else {
         next(err);
       }
@@ -94,8 +87,6 @@ module.exports.updateAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные при обновлении аватара'));
-      } else if (err.name === 'CastError') {
-        next(new BadRequest('Ошибка в id пользователя'));
       } else {
         next(err);
       }
@@ -109,9 +100,6 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
       res.send({ token });
-    })
-    .catch(() => {
-      next(new AuthError('Ошибка авторизации'));
     })
     .catch(next);
 };

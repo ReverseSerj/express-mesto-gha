@@ -32,8 +32,8 @@ app.use(auth);
 app.use('/', userRouter);
 app.use('/', cardRouter);
 app.use('*', (req, res, next) => { next(new NotFound('Адресс не существует')); });
-app.use(handleErr);
 app.use(errors());
+app.use(handleErr);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

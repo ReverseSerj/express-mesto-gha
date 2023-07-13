@@ -32,10 +32,7 @@ module.exports.deleteCard = (req, res, next) => {
       } else if (card.owner.toString() !== req.user._id) {
         next(new CurrentError('Ошибка доступа'));
       } else {
-        Card.findByIdAndRemove(req.params.cardId)
-          .then((findedcard) => {
-            res.status(200).send({ data: findedcard });
-          });
+        return Card.deleteOne(req.params.cardId);
       }
     })
     .catch((err) => {
