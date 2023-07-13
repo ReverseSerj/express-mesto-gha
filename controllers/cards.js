@@ -32,7 +32,7 @@ module.exports.deleteCard = (req, res, next) => {
       } else if (card.owner.toString() !== req.user._id) {
         next(new CurrentError('Ошибка доступа'));
       } else {
-        Card.deleteOne()
+        Card.deleteOne(card)
           .then((findedcard) => {
             res.status(200).send({ data: findedcard });
           });
