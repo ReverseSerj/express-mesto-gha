@@ -32,13 +32,12 @@ module.exports.deleteCard = (req, res, next) => {
       } else if (card.owner.toString() !== req.user._id) {
         next(new CurrentError('Ошибка доступа'));
       } else {
-        // eslint-disable-next-line spaced-comment
-        /*ругается на return, поэтому его тут нет*/
         Card.deleteOne(card)
           .then((findedcard) => {
             res.status(200).send({ data: findedcard });
           });
       }
+      return false;
     })
     .catch((err) => {
       if (err.name === 'CastError') {
