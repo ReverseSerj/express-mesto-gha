@@ -14,7 +14,7 @@ const {
   createUserValidator, loginValidator,
 } = require('./validators/validators');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 80 } = process.env;
 const app = express();
 
 app.use(helmet());
